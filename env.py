@@ -33,18 +33,20 @@ class Cactpot(object):
 
 	width = height = 3
 	size = width * height
+	stages = 2
 
 	def __init__(self):
 		self.board = np.arange(Cactpot.size) + 1
 		self.mask = np.zeros(Cactpot.size)
+		self.mask[np.random.choice(Cactpot.size)] = 1
 
 		self.turn = 0
 
 		self.state_space = (Cactpot.height, Cactpot.height, Cactpot.size)
-		self.action_space = Cactpot.size
+		self.action_spaces = [Cactpot.size, Cactpot.height + Cactpot.width + 2]
 
 		# r1, r2, r3, c1, c2, c3, xlr, xrl
-		self.action_space_2 = Cactpot.height + Cactpot.width + 2
+		#self.action_space_2 = Cactpot.height + Cactpot.width + 2
 
 	def _state(self):
 		z = np.zeros((Cactpot.size, Cactpot.size))
@@ -103,6 +105,7 @@ class Cactpot(object):
 	def reset(self):
 		np.random.shuffle(self.board)
 		self.mask = np.zeros(Cactpot.size)
+		self.mask[np.random.choice(Cactpot.size)] = 1
 
 		self.turn = 0
 
@@ -118,7 +121,6 @@ if __name__ == '__main__':
 
 	env.render()
 
-	env.step(0)
 	env.step(1)
 	env.step(3)
 	state, reward, done, info = env.step(4)
